@@ -3,7 +3,7 @@ import SpotifyWebApi from "spotify-web-api-node";
 
 export async function GET(req) {
   try {
-    const token = await getToken({ req });
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token?.spotifyAccessToken) {
       return new Response("Unauthorized", { status: 401 });
     }
