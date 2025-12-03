@@ -15,27 +15,34 @@ const ResultsPage = () => {
   const [minutes, setMinutes] = useState(0);
 
   const safeFetch = async (url) => {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to fetch ${url}`);
+    const res = await fetch(url, { credentials: "include" }); // pastikan session dikirim
+    if (!res.ok) throw new Error(`Failed to fetch ${url} (${res.status})`);
     return res.json();
   };
 
   useEffect(() => {
-    Promise.all([
-      safeFetch("/api/user"),
-      safeFetch("/api/top-tracks"),
-      safeFetch("/api/top-artists"),
-      safeFetch("/api/top-albums"),
-      safeFetch("/api/minutes"),
-    ])
-      .then(([userName, tracksData, artistsData, albumsData, minutesData]) => {
+    const fetchData = async () => {
+      try {
+        const [userName, tracksData, artistsData, albumsData, minutesData] =
+          await Promise.all([
+            safeFetch("/api/user"),
+            safeFetch("/api/top-tracks"),
+            safeFetch("/api/top-artists"),
+            safeFetch("/api/top-albums"),
+            safeFetch("/api/minutes"),
+          ]);
+
         setUser(userName.name || "");
         setTracks(tracksData.items || []);
         setArtists(artistsData.items || []);
         setAlbums(albumsData.items || []);
         setMinutes(minutesData.totalMinutes || 0);
-      })
-      .catch((err) => console.error("Error fetching Wrapped data:", err));
+      } catch (err) {
+        console.error("Error fetching Wrapped data:", err);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -46,18 +53,18 @@ const ResultsPage = () => {
       {/* top list */}
       <div className="flex flex-col gap-9 justify-center md:flex-row md:justify-between items-center w-full max-w-2xl md:max-w-5xl">
         <TopList
-          items={tracks || []}
+          items={tracks}
           title="Top Tracks"
           type="name"
           titleSrc={track}
         />
         <TopList
-          items={artists || []}
+          items={artists}
           title="Top Artists"
           titleSrc={artist}
         />
         <TopList
-          items={albums || []}
+          items={albums}
           title="Top Album"
           type="name"
           titleSrc={playlist}

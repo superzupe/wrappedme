@@ -9,7 +9,7 @@ export async function GET(red) {
     }
 
     const spotifyApi = new SpotifyWebApi();
-    spotifyApi.setAccessToken(token.spotifyAccessTokenn);
+    spotifyApi.setAccessToken(token.spotifyAccessToken);
 
     const data = await spotifyApi.getMyTopTracks({
       limit: 20,
