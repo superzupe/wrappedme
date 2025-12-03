@@ -2,20 +2,30 @@ import { getToken } from "next-auth/jwt";
 import SpotifyWebApi from "spotify-web-api-node";
 
 export async function GET(req) {
-  const token = await getToken({ req });
-  const spotifyApi = new SpotifyWebApi();
-  spotifyApi.setAccessToken(token?.accessToken);
+  try {
+    const token = await getToken({ req });
+    if (!token?.accesToken) {
+      return new Response("Unauthorized", { status: 401 });
+    }
 
-  const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 50 });
+    const spotifyApi = new SpotifyWebApi();
+    spotifyApi.setAccessToken(token?.accessToken);
 
-  const totalMinutesSample = data.body.items.reduce(
-    (acc, item) => acc + item.track.duration_ms / 1000 / 60,
-    0
-  );
+    const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 50 });
 
-  const totalMinutes = Math.round(totalMinutesSample * 52);
+    const totalMinutesSample = data.body.items.reduce(
+      (acc, item) => acc + item.track.duration_ms / 1000 / 60,
+      0
+    );
 
-  return new Response(JSON.stringify({ totalMinutes }), {
-    headers: { "Content-Type": "application/json" },
-  });
+    const totalMinutes = Math.round(totalMinutesSample * 52);
+
+    return new Response(JSON.stringify({ totalMinutes }), {
+      headers: { "Content-Type": "application/json" },
+    });
+    
+  } catch (err) {
+    console.error("API /minutes error:", err);
+    return new Response("Internal Server Error", {status: 500})
+  }
 }

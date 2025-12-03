@@ -11,22 +11,22 @@ export async function GET(req) {
     const spotifyApi = new SpotifyWebApi();
     spotifyApi.setAccessToken(token?.accessToken);
 
-    const data = await spotifyApi.getMyTopArtists({
+    const data = await spotifyApi.getMyTopTracks({
       limit: 5,
       time_range: "long_term",
     });
-    const artists = data.body.items.map((artist) => ({
-      id: artist.id,
-      title: artist.name,
-      artist: artist.name,
-      profileImage: artist.images[0]?.url,
+    const tracks = data.body.items.map((track) => ({
+      id: track.id,
+      title: track.name,
+      thumbnail: track.album.images[0]?.url,
+      artist: track.artists.map((a) => a.name).join(", "),
     }));
 
-    return new Response(JSON.stringify({ items: artists }), {
+    return new Response(JSON.stringify({ items: tracks }), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
-    console.error("API /top-artists error:", err);
+    console.error("API /top-tracks error:", err);
     return new Response("Internal Server Error", { status: 500 });
   }
 }

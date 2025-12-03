@@ -14,13 +14,19 @@ const ResultsPage = () => {
   const [albums, setAlbums] = useState([]);
   const [minutes, setMinutes] = useState(0);
 
+  const safeFetch = async (url) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Failed to fetch ${url}`);
+    return res.json();
+  };
+
   useEffect(() => {
     Promise.all([
-      fetch("/api/user").then((res) => res.json()),
-      fetch("/api/top-tracks").then((res) => res.json()),
-      fetch("/api/top-artists").then((res) => res.json()),
-      fetch("/api/top-albums").then((res) => res.json()),
-      fetch("/api/minutes").then((res) => res.json()),
+      safeFetch("/api/user"),
+      safeFetch("/api/top-tracks"),
+      safeFetch("/api/top-artists"),
+      safeFetch("/api/top-albums"),
+      safeFetch("/api/minutes"),
     ])
       .then(([userName, tracksData, artistsData, albumsData, minutesData]) => {
         setUser(userName.name || "");
