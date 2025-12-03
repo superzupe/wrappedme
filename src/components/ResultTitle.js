@@ -9,7 +9,7 @@ const ResultTitle = ({user}) => {
         through this year.
       </h1>
       <h1 className="md:hidden text-text-base font-black text-3xl">
-        hi zulfa, here’s your <span className="text-indigo-500">year</span> in{" "}
+        hi {user}, here’s your <span className="text-indigo-500">year</span> in{" "}
         <span className="text-purple-400">music</span>{" "}
       </h1>
       <TypingDesc />
