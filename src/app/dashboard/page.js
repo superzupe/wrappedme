@@ -4,21 +4,36 @@ export const dynamic = "force-dynamic";
 
 import { useSession, signIn } from "next-auth/react";
 import PrimaryButton from "@/components/PrimaryButton";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const DashboardPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter()
+  
+  //sudah connect lanjut fetch
+  useEffect(() => {
+    if(status === "autheticated" && session?.spotifyAccessToken) {
+      router.push("/results");
+    }
+  },[status, session, router])
 
-  if (!session)
+  if (status === "loading")
     return (
-      <div className="flex flex-col min-h-screen bg-login justify-center items-center">
+      <div className="flex flex-col min-h-screen bg-galaxy-main justify-center items-center">
         <p>Loading...</p>
       </div>
     );
 
+//belum login
+if(!session) {
+  return router.push("/login")
+}
+
   //jika belum connect
   if (!session.spotifyAccessToken) {
     return (
-      <div className="flex flex-col min-h-screen bg-login justify-center items-center">
+      <div className="flex flex-col min-h-screen bg-galaxy-main max-w-2xs justify-center items-center">
         <PrimaryButton
           onClick={() => signIn("spotify")}
           label="Connect to Spotify"
@@ -26,8 +41,10 @@ const DashboardPage = () => {
       </div>
     );
   }
+
+
   return (
-    <div className="flex flex-col min-h-screen bg-login justify-center items-center">
+    <div className="flex flex-col min-h-screen bg-galaxy-main justify-center items-center">
       <p>Spotify connected! Fetching...</p>
     </div>
   );
