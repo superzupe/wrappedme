@@ -13,7 +13,7 @@ const DashboardPage = () => {
   
   //sudah connect lanjut fetch
   useEffect(() => {
-    if(status === "autheticated" && session?.spotifyAccessToken) {
+    if(status === "authenticated" && session?.spotifyAccessToken) {
       router.push("/results");
     }
   },[status, session, router])
