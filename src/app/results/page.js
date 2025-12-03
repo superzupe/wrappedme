@@ -40,19 +40,19 @@ const ResultsPage = () => {
       {/* top list */}
       <div className="flex flex-col gap-9 justify-center md:flex-row md:justify-between items-center w-full max-w-2xl md:max-w-5xl">
         <TopList
-          data={tracks}
-          label="Top Tracks"
+          items={tracks || []}
+          title="Top Tracks"
           type="name"
           titleSrc={track}
         />
         <TopList
-          data={artists}
-          label="Top Artists"
+          items={artists || []}
+          title="Top Artists"
           titleSrc={artist}
         />
         <TopList
-          data={albums}
-          label="Top Album"
+          items={albums || []}
+          title="Top Album"
           type="name"
           titleSrc={playlist}
         />
@@ -60,7 +60,7 @@ const ResultsPage = () => {
 
       <Minutes minutes={minutes} />
       <ButtonAuth
-        onClick={() => signOut({callbackUrl: "/"})}
+        onClick={() => signOut({ callbackUrl: "/" })}
         label="Log out"
       />
     </main>
