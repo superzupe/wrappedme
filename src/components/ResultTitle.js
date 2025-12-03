@@ -1,3 +1,5 @@
+"use client"
+
 import TypingDesc from "@/components/TypingDesc";
 
 const ResultTitle = ({user}) => {

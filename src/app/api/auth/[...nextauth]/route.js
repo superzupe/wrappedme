@@ -23,29 +23,27 @@ const handler = NextAuth({
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     }),
   ],
+
   secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: "/login", // kalau belum login, redirect ke /login
-  },
+
   callbacks: {
-    // ⬇️ Simpan accessToken ke JWT
-    async jwt({ token, account, user }) {
-      if (account) {
-        token.accessToken = account.access_token;
-        token.provider = account.provider;
+    async jwt({ token, account }) {
+      if (account?.provider === "spotify") {
+        token.spotifyAccessToken = account.access_token;
+        token.spotifyRefreshToken = account.refresh_token;
       }
       return token;
     },
 
     // ⬇️ Kirim access token ke frontend session()
     async session({ session, token }) {
-      session.accessToken = token.accessToken;
-      session.provider = token.provider;
+      session.spotifyAccessToken = token.spotifyAccessToken ?? null;
+      session.spotifyRefreshToken = token.spotifyRefreshToken ?? null;
       return session;
     },
 
     async redirect() {
-      return "/results";
+      return "/dashboard";
     },
   },
 });

@@ -3,7 +3,7 @@ import "../styles/globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
-  width: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: [ "200", "300", "400", "500", "600", "700", "800"],
   subsets: ["latin"],
 });
 
@@ -18,11 +18,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${jakarta.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${jakarta.variable} antialiased`}>{children}</body>
     </html>
   );
 }

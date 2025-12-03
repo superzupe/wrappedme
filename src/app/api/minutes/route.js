@@ -4,12 +4,12 @@ import SpotifyWebApi from "spotify-web-api-node";
 export async function GET(req) {
   try {
     const token = await getToken({ req });
-    if (!token?.accesToken) {
+    if (!token?.spotifyAccessToken) {
       return new Response("Unauthorized", { status: 401 });
     }
 
     const spotifyApi = new SpotifyWebApi();
-    spotifyApi.setAccessToken(token.accessToken);
+    spotifyApi.setAccessToken(token.spotifyAccessToken);
 
     const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 50 });
 

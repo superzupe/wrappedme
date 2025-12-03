@@ -4,17 +4,18 @@ import SpotifyWebApi from "spotify-web-api-node";
 export async function GET(req) {
   try {
     const token = await getToken({ req });
-    if (!token?.accessToken) {
+    if (!token?.spotifyAccessToken) {
       return new Response("Unauthorized", { status: 401 });
     }
 
     const spotifyApi = new SpotifyWebApi();
-    spotifyApi.setAccessToken(token.accessToken);
+    spotifyApi.setAccessToken(token.spotifyAccessToken);
 
     const data = await spotifyApi.getMyTopArtists({
       limit: 5,
       time_range: "long_term",
     });
+    
     const artists = data.body.items.map((artist) => ({
       id: artist.id,
       title: artist.name,

@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { signIn } from "next-auth/react";
 import { iconSpotify, iconGoogle, iconFacebook } from "@/assets";
@@ -52,7 +53,9 @@ const LoginPage = () => {
             value={value}
             onChange={setValue}
           />
-          <PrimaryButton onClick={() => signIn("spotify")} />
+          <PrimaryButton
+            onClick={() => signIn("spotify")} label="Continue"
+          />
         </form>
 
         {/* sign up link */}

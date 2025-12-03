@@ -1,3 +1,5 @@
+"use client"
+
 const ButtonAuth = ({onClick, label}) => {
   return (
     <button
