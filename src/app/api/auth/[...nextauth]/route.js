@@ -28,8 +28,23 @@ const handler = NextAuth({
     signIn: "/login", // kalau belum login, redirect ke /login
   },
   callbacks: {
-    async redirect({ url, baseUrl }) {
-      // setelah login sukses, redirect ke /wrapped
+    // ⬇️ Simpan accessToken ke JWT
+    async jwt({ token, account, user }) {
+      if (account) {
+        token.accessToken = account.access_token;
+        token.provider = account.provider;
+      }
+      return token;
+    },
+
+    // ⬇️ Kirim access token ke frontend session()
+    async session({ session, token }) {
+      session.accessToken = token.accessToken;
+      session.provider = token.provider;
+      return session;
+    },
+
+    async redirect() {
       return "/results";
     },
   },

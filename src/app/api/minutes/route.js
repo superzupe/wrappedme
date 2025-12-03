@@ -9,7 +9,7 @@ export async function GET(req) {
     }
 
     const spotifyApi = new SpotifyWebApi();
-    spotifyApi.setAccessToken(token?.accessToken);
+    spotifyApi.setAccessToken(token.accessToken);
 
     const data = await spotifyApi.getMyRecentlyPlayedTracks({ limit: 50 });
 
@@ -23,7 +23,7 @@ export async function GET(req) {
     return new Response(JSON.stringify({ totalMinutes }), {
       headers: { "Content-Type": "application/json" },
     });
-    
+
   } catch (err) {
     console.error("API /minutes error:", err);
     return new Response("Internal Server Error", {status: 500})
