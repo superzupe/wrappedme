@@ -62,7 +62,10 @@ export const authOptions = {
       clientId: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
       authorization: {
-        params: { scope: "user-top-read user-read-recently-played" },
+        params: {
+          scope:
+            "user-read-email user-top-read playlist-read-private user-read-private",
+        },
       },
     }),
   ],
