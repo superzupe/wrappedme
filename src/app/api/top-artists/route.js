@@ -2,6 +2,7 @@ import { getToken } from "next-auth/jwt";
 import SpotifyWebApi from "spotify-web-api-node";
 
 export async function GET(req) {
+  // Pastikan menggunakan 'req'
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token?.spotifyAccessToken) {
@@ -15,7 +16,7 @@ export async function GET(req) {
       limit: 5,
       time_range: "long_term",
     });
-    
+
     const artists = data.body.items.map((artist) => ({
       id: artist.id,
       title: artist.name,

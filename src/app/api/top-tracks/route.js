@@ -2,6 +2,7 @@ import { getToken } from "next-auth/jwt";
 import SpotifyWebApi from "spotify-web-api-node";
 
 export async function GET(req) {
+  // Pastikan menggunakan 'req'
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token?.spotifyAccessToken) {

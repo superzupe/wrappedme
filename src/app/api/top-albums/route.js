@@ -1,9 +1,11 @@
 import { getToken } from "next-auth/jwt";
 import SpotifyWebApi from "spotify-web-api-node";
 
-export async function GET(red) {
+// PERBAIKAN UTAMA: Ganti 'red' menjadi 'req' agar getToken bisa bekerja
+export async function GET(req) {
   try {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
     if (!token?.spotifyAccessToken) {
       return new Response("Unauthorized", { status: 401 });
     }
@@ -22,6 +24,7 @@ export async function GET(red) {
       albumCounts[album.id] = albumCounts[album.id] || {
         id: album.id,
         title: album.name,
+        // Pastikan images[0] ada sebelum mengakses .url
         thumbnail: album.images[0]?.url,
         artist: album.artists.map((a) => a.name).join(", "),
         count: 0,
@@ -36,6 +39,7 @@ export async function GET(red) {
     });
   } catch (err) {
     console.error("API /top-albums error:", err);
+    // Tambahkan penanganan error spesifik jika perlu, tapi 500 sudah baik
     return new Response("Internal Server Error", { status: 500 });
   }
 }
