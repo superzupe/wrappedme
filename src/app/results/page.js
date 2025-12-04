@@ -14,35 +14,31 @@ const ResultsPage = () => {
   const [albums, setAlbums] = useState([]);
   const [minutes, setMinutes] = useState(0);
 
+  // helper safe fetch
   const safeFetch = async (url) => {
-    const res = await fetch(url, { credentials: "include" }); // pastikan session dikirim
-    if (!res.ok) throw new Error(`Failed to fetch ${url} (${res.status})`);
+    const res = await fetch(url, { credentials: "include" }); // kirim cookie session
+    if (!res.ok) throw new Error(`Failed to fetch ${url}`);
     return res.json();
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [userName, tracksData, artistsData, albumsData, minutesData] =
-          await Promise.all([
-            safeFetch("/api/user"),
-            safeFetch("/api/top-tracks"),
-            safeFetch("/api/top-artists"),
-            safeFetch("/api/top-albums"),
-            safeFetch("/api/minutes"),
-          ]);
+    if (!session?.spotifyAccessToken) return;
 
-        setUser(userName.name || "");
-        setTracks(tracksData.items || []);
-        setArtists(artistsData.items || []);
-        setAlbums(albumsData.items || []);
-        setMinutes(minutesData.totalMinutes || 0);
-      } catch (err) {
-        console.error("Error fetching Wrapped data:", err);
-      }
-    };
-
-    fetchData();
+    Promise.all([
+      safeFetch("/api/user"),
+      safeFetch("/api/top-tracks"),
+      safeFetch("/api/top-artists"),
+      safeFetch("/api/top-albums"),
+      safeFetch("/api/minutes"),
+    ])
+      .then(([userData, tracksData, artistsData, albumsData, minutesData]) => {
+        setUser(userData.name);
+        setTracks(tracksData.items);
+        setArtists(artistsData.items);
+        setAlbums(albumsData.items);
+        setMinutes(minutesData.totalMinutes);
+      })
+      .catch((err) => console.error("Error fetching Wrapped data:", err));
   }, []);
 
   return (
