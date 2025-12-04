@@ -1,5 +1,8 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
+
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { track, artist, playlist } from "@/assets";
