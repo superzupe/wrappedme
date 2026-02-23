@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌌 WrappedMe — Real-Time Spotify Insights
 
-## Getting Started
+**WrappedMe** adalah dashboard analitik musik berbasis **Next.js** yang memvisualisasikan data Spotify pengguna secara *real-time*. Aplikasi ini mengolah data dari **Spotify Web API** untuk menampilkan lagu, artis, dan album teratas serta estimasi waktu mendengarkan tanpa harus menunggu akhir tahun.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Fitur Utama
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* **Secure Authentication**: Menggunakan **NextAuth.js** (OAuth 2.0) untuk login aman via akun Spotify.
+* **Real-Time Data**: Mengambil tren musik terbaru langsung melalui **Node.js API Routes**.
+* **Smart Algorithms**: Kalkulasi estimasi total menit mendengarkan berdasarkan data riwayat putar.
+* **High Performance**: Optimasi pemuatan data secara paralel menggunakan `Promise.all`.
+* **Dynamic UI**: Antarmuka modern dengan **Tailwind CSS** dan fitur animasi *typing effect*.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+* **Frontend**: Next.js (App Router), React.js, Tailwind CSS.
+* **Backend**: Node.js (Next.js API Routes).
+* **Autentikasi**: NextAuth.js (Auth.js) dengan Spotify Provider.
+* **Integrasi API**: Spotify Web API Node SDK.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ⚙️ Cara Menjalankan Proyek
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1.  **Install Dependensi**
+    ```bash
+    npm install
+    ```
 
-## Deploy on Vercel
+2.  **Konfigurasi `.env.local`**
+    Dapatkan credentials di [Spotify Developer Dashboard](https://developer.spotify.com/).
+    ```env
+    SPOTIFY_CLIENT_ID=your_id
+    SPOTIFY_CLIENT_SECRET=your_secret
+    NEXTAUTH_SECRET=any_random_string
+    NEXTAUTH_URL=http://localhost:3000
+    ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3.  **Run Development**
+    ```bash
+    npm run dev
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 💡 Technical Insights: Handling 401 Unauthorized
+
+Proyek ini menangani tantangan teknis terkait masa berlaku token Spotify yang singkat dengan mengimplementasikan **Refresh Token Rotation** pada *server-side session*. Hal ini memastikan pengguna tetap terautentikasi secara aman tanpa perlu login ulang saat mengakses data.
